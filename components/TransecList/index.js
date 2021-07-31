@@ -17,9 +17,9 @@ import {
     Text,
     Heading
 } from "native-base"
-import { flexWrap } from 'styled-system';
 import TransecItem from "./TransecItem";
 import TransecHeader from "./TransecHeader";
+import TransecChart from "../TransecChart";
 
 const DATA = [
     {
@@ -40,7 +40,7 @@ const DATA = [
     }
 ];
 
-const HEADER_MAX_HEIGHT = 200;
+const HEADER_MAX_HEIGHT = 250;
 const HEADER_MIN_HEIGHT = 50;
 const HEADER_SCROLL_DISTANCE = (HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT);
 
@@ -80,7 +80,8 @@ const TransecList = () => {
                 </SafeAreaView >
             </View>
             <Animated.View style={[styles.ghHeader, { height: headerHeight, backgroundColor: '#f87171' }]}>
-                <Text fontSize="sm" pr={3} textAlign="right" color="#9e9e9e" >test</Text>
+                {/* <Text fontSize="sm" pr={3} textAlign="right" color="#9e9e9e" >test</Text> */}
+                <TransecChart />
             </Animated.View>
             <Animated.View
                 style={{
@@ -98,9 +99,6 @@ const TransecList = () => {
                             }
                         }
                     )}
-                    //stickySectionHeadersEnabled={(offsetY > 106)}
-                    //showsVerticalScrollIndicator={false}
-                    scrollEventThrottle={16}
                     sections={DATA}
                     keyExtractor={(item, index) => item + index}
                     renderItem={({ item }) => <TransecItem title={item} />}

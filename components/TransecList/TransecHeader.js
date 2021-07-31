@@ -10,7 +10,7 @@ import {
 
 const TransecHeader = ({title}) => {
     return (
-        <Heading size="sm" py={5} bg="#334155" color="white">{title}</Heading>
+        <Heading size="sm" py={2} bg="#334155" color="white">{title}</Heading>
     );
 };
 
