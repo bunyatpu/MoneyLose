@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'flex-start',
         alignItems: 'center',
-        height: 130
+        height: 100
     }
 });
 

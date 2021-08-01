@@ -4,10 +4,8 @@ import {
     View,
     SafeAreaView,
     TouchableOpacity,
-    ScrollView,
     SectionList,
-    Animated,
-    FlatList
+    Animated
 } from 'react-native';
 import {
     VStack,
@@ -15,11 +13,14 @@ import {
     Box,
     Flex,
     Text,
-    Heading
+    Heading,
+    Fab,
+    Icon
 } from "native-base"
 import TransecItem from "./TransecItem";
 import TransecHeader from "./TransecHeader";
 import TransecChart from "../TransecChart";
+import { Ionicons, Entypo, FontAwesome5 } from '@expo/vector-icons';
 
 const DATA = [
     {
@@ -58,6 +59,12 @@ const TransecList = () => {
 
     return (
         <View style={styles.contaner} >
+            <Fab
+                position="absolute"
+                bottom={120}
+                size="sm"
+                icon={<Icon color="white" as={<Ionicons name="add"  />} size="sm" />}
+            />
             <View style={{ height: 130 }}>
                 <SafeAreaView style={styles.hBox}  >
                     <Heading size="md" color="white">฿50,000</Heading>
@@ -85,7 +92,7 @@ const TransecList = () => {
             </Animated.View>
             <Animated.View
                 style={{
-                    flex:1,
+                    flex: 1,
                     paddingTop: headerHeight
                 }}
             >
