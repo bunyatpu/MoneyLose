@@ -1,4 +1,5 @@
-import React, { useState, useMemo, useRef } from 'react';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
+import { useSelector, useDispatch } from "react-redux";
 import {
     StyleSheet,
     View,
@@ -15,14 +16,16 @@ import {
     Text,
     Heading,
     Fab,
-    Icon
+    Icon,
+    Spinner
 } from "native-base"
 import TransecItem from "./TransecItem";
 import TransecHeader from "./TransecHeader";
 import TransecChart from "../TransecChart";
 import { Ionicons, Entypo, FontAwesome5 } from '@expo/vector-icons';
+import { getTransecList } from "../../state/actions/TransecAction";
 
-const DATA = [
+const __DATA = [
     {
         title: "Main dishes",
         data: ["Pizza", "Burger", "Risotto"]
@@ -47,15 +50,26 @@ const HEADER_SCROLL_DISTANCE = (HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT);
 
 const TransecList = () => {
 
-    //const [offsetY, setOffsetY] = useState(0)
+    const dispatch = useDispatch();
     const offset = useRef(new Animated.Value(0)).current;
+    const DATA = useSelector(({ transec }) => transec.transData);
+    const loading = useSelector(({ transec }) => transec.transLoading);
+
+
     const headerHeight = useMemo(() => {
         return offset.interpolate({
             inputRange: [0, HEADER_SCROLL_DISTANCE],
             outputRange: [HEADER_SCROLL_DISTANCE, 0],
             extrapolate: 'clamp'
         });
-    }, [offset])
+    }, [offset]);
+
+    useEffect(() => {
+
+        getTransecList()(dispatch)
+    }, [])
+
+
 
     return (
         <View style={styles.contaner} >
@@ -63,7 +77,7 @@ const TransecList = () => {
                 position="absolute"
                 bottom={120}
                 size="sm"
-                icon={<Icon color="white" as={<Ionicons name="add"  />} size="sm" />}
+                icon={<Icon color="white" as={<Ionicons name="add" />} size="sm" />}
             />
             <View style={{ height: 130 }}>
                 <SafeAreaView style={styles.hBox}  >
@@ -96,23 +110,25 @@ const TransecList = () => {
                     paddingTop: headerHeight
                 }}
             >
-                <SectionList
+                {loading && <VStack flex={1} pt={20} space={1} justifyContent="flex-start" >
+                    <Spinner color="#4ade80" accessibilityLabel="Loading posts" />
+                    <Text color="#4ade80" alignSelf="center" fontSize="xxs" >loading...</Text>
+                </VStack>}
+                {!loading && <SectionList
                     onScroll={Animated.event(
                         [{ nativeEvent: { contentOffset: { y: offset } } }],
                         {
                             useNativeDriver: false,
-                            listener: (e) => {
-                                //setOffsetY(e.nativeEvent.contentOffset.y)
-                            }
+                            listener: (e) => { }
                         }
                     )}
                     sections={DATA}
                     keyExtractor={(item, index) => item + index}
-                    renderItem={({ item }) => <TransecItem title={item} />}
+                    renderItem={({ item }) => <TransecItem data={item} />}
                     renderSectionHeader={({ section: { title } }) => (
                         <TransecHeader title={title} />
                     )}
-                />
+                />}
             </Animated.View>
         </View>
     );

@@ -23,13 +23,21 @@ import {
     BarChart,
     LineChart
 } from "react-native-chart-kit";
+import { intToString } from "../../services/utils/utils";
 
 const windowWidth = Dimensions.get('window').width;
 const data = {
     labels: ["10th", "11th", "12th", "13th", "14th", "15th"],
     datasets: [
         {
-            data: [5000, 4500, 3000, 2000, 4000, 5000]
+            data: [
+                50000,
+                45000, 
+                30000, 
+                2000, 
+                4000, 
+                500
+            ]
         }
     ]
 };
@@ -53,6 +61,10 @@ const TransecChart = () => {
             width={windowWidth}
             height={200}
             yAxisLabel=""
+            formatYLabel={(val)=>{
+
+                return intToString(val)
+            }}
             chartConfig={chartConfig}
         />
     );
