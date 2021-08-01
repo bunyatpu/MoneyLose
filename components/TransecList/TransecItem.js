@@ -62,7 +62,7 @@ const TransecItem = ({ data }) => {
                 alignSelf="flex-start"
 
             >
-                {`${(data.direct == 2) ? '- ' : '+ '}${data.amt}`}
+                {`${(data.direct == 2) ? '' : '+ '}${data.amt}`}
             </Box>
         </HStack>
     </Box>

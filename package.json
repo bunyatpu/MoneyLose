@@ -19,6 +19,7 @@
     "native-base": "^3.0.6",
     "react": "16.13.1",
     "react-dom": "16.13.1",
+    "react-hook-form": "^7.12.2",
     "react-native": "https://github.com/expo/react-native/archive/sdk-42.0.0.tar.gz",
     "react-native-chart-kit": "^6.11.0",
     "react-native-gesture-handler": "~1.10.2",

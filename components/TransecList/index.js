@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { useSelector, useDispatch } from "react-redux";
+import { useNavigation, useIsFocused } from '@react-navigation/native';
 import {
     StyleSheet,
     View,
@@ -22,27 +23,9 @@ import {
 import TransecItem from "./TransecItem";
 import TransecHeader from "./TransecHeader";
 import TransecChart from "../TransecChart";
-import { Ionicons, Entypo, FontAwesome5 } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import { getTransecList } from "../../state/actions/TransecAction";
 
-const __DATA = [
-    {
-        title: "Main dishes",
-        data: ["Pizza", "Burger", "Risotto"]
-    },
-    {
-        title: "Sides",
-        data: ["French Fries", "Onion Rings", "Fried Shrimps"]
-    },
-    {
-        title: "Drinks",
-        data: ["Water", "Coke", "Beer"]
-    },
-    {
-        title: "Desserts",
-        data: ["Cheese Cake", "Ice Cream", "xxxxxx", "xxxxxx", "xxxxxx", "xxxxxx", "xxxxxx", "xxxxxx", "xxxxxx"]
-    }
-];
 
 const HEADER_MAX_HEIGHT = 250;
 const HEADER_MIN_HEIGHT = 50;
@@ -51,6 +34,8 @@ const HEADER_SCROLL_DISTANCE = (HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT);
 const TransecList = () => {
 
     const dispatch = useDispatch();
+    const navigation = useNavigation();
+    const isFocused = useIsFocused();
     const offset = useRef(new Animated.Value(0)).current;
     const DATA = useSelector(({ transec }) => transec.transData);
     const loading = useSelector(({ transec }) => transec.transLoading);
@@ -65,20 +50,26 @@ const TransecList = () => {
     }, [offset]);
 
     useEffect(() => {
-
         getTransecList()(dispatch)
     }, [])
 
+    const goto = (name) => {
 
+        navigation.navigate(name)
+    }
 
     return (
-        <View style={styles.contaner} >
-            <Fab
-                position="absolute"
-                bottom={120}
-                size="sm"
-                icon={<Icon color="white" as={<Ionicons name="add" />} size="sm" />}
-            />
+        <View style={styles.contaner}  >
+            <Box position="relative" w="100%" >
+                <Fab
+                    position="absolute"
+                    renderInPortal={isFocused}
+                    bottom={120}
+                    size="sm"
+                    onPress={() => { goto('TransecForm') }}
+                    icon={<Icon color="white" as={<Ionicons name="add" />} size="sm" />}
+                />
+            </Box>
             <View style={{ height: 130 }}>
                 <SafeAreaView style={styles.hBox}  >
                     <Heading size="md" color="white">฿50,000</Heading>
@@ -137,8 +128,7 @@ const TransecList = () => {
 const styles = StyleSheet.create({
     contaner: {
         flex: 1,
-        backgroundColor: '#374151',
-
+        backgroundColor: '#374151'
     },
     ghHeader: {
         position: 'absolute',

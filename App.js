@@ -11,12 +11,9 @@ import store from "./state/store";
 const theme = extendTheme({
   components: {
     FAB: {
-      baseStyle: {},
       defaultProps: {
         backgroundColor: '#34d399',
-      },
-      variants: {},
-      sizes: {},
+      }
     }
   }
 });

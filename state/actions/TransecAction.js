@@ -5,6 +5,49 @@ import {
 } from "../reducers/TransecReducer";
 import moment from "moment";
 
+
+export const SaveTrans = (val, refDatas) =>{
+
+    //console.log('---refDatas:', refDatas);
+
+    return async (dispatch) =>{
+
+        const index = refDatas.findIndex( i => {
+            return moment(i.title.name).format('yyyyMMDD') == moment().format('yyyyMMDD')
+        });
+
+        console.log('---index', index);
+
+        let newData = []
+        if(index >= 0){
+
+            let jsonTxt = JSON.stringify(refDatas);
+            let jsonObj = JSON.parse(jsonTxt)
+
+            newData = [...jsonObj]
+            newData[index].data.push(val)
+            
+        }else{
+
+            newData = [ {
+                title: { name: moment(), summary: 0 },
+                data: [
+                    val
+                ]
+            }]
+        }
+
+        //console.log('---newData:', newData);
+
+        const sortMock = newData
+        .map((v) => ({ ...v, data: v.data.sort((a, b) => (a.direct > b.direct) ? 1 : -1) }))
+        .map((v) => ({ ...v, title:{...v.title, summary: v.data.reduce((a, c) => parseInt(a,10) + parseInt(c.amt,10),0)  }}))
+        .sort((a, b) => (moment(a.title.name).isBefore(b.title.name)) ? 1 : -1);
+        dispatch(setTransData(sortMock));
+
+    }
+}
+
 export const getTransecList = () => {
 
     return async (dispatch) => {
@@ -55,7 +98,7 @@ export const getTransecList = () => {
             setTimeout(() => {
                 dispatch(setTransData(sortMock));
                 dispatch(setTransLoading(false));
-            }, 1500);
+            }, 500);
 
         }
         catch (error) {
